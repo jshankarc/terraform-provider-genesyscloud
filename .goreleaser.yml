@@ -10,13 +10,13 @@ builds:
     # usage by users in CI/CD systems like Terraform Cloud where
     # they are unable to install libraries.
     - CGO_ENABLED=0
+    - GO111MODULE=on
   mod_timestamp: '{{ .CommitTimestamp }}'
   flags:
     - -trimpath
   ldflags:
     - '-s -w -X main.version={{.Version}} -X main.commit={{.Commit}}'
   goos:
-    - freebsd
     - windows
     - linux
     - darwin
@@ -28,6 +28,11 @@ builds:
   ignore:
     - goos: darwin
       goarch: '386'
+    - goos: windows
+      goarch: amd64 
+    - goos: windows
+      goarch: arm
+      goarm: 6
   binary: '{{ .ProjectName }}_v{{ .Version }}'
 archives:
 - format: zip
